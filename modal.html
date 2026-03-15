@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+
+  <!-- font-awesome  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- tailwind + daisyUI -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+  <button class="btn" onclick="my_modal_1.showModal()">open modal</button>
+  <dialog id="my_modal_1" class="modal">
+    <div class="modal-box">
+      <h3 class="text-lg font-bold">${Issue.title}</h3>
+      <ul class="flex gap-3">
+        <li class="list-none badge badge-success">Opened by ${Issue.author}</li>
+        <li></li>
+        <li></li>
+      </ul>
+      <div class="flex gap-2">
+       ${Issue.labels.map(label => `<p class="badge badge-warning">${label}</p>`).join('')}
+      </div>
+      <p class="py-4">
+        ${Issue.description}
+      </p>
+      <p class="text-xs">
+        Assignee:${Issue.assignee}
+      </p>
+      <div>
+        <p>Priority:</p>
+        <p class="badge badge-dash badge-error rounded-full px-4 py-2 text-xs">
+          ${Issue.priority}
+        </p>
+      </div>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn btn-primary">Close</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+</body>
+
+</html>
