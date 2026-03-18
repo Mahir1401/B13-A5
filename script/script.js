@@ -44,9 +44,12 @@ function toggle(name) {
 }
 
 const loadIssues = ()=>{
+
   fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
   .then((res) => res.json())
-  .then((json)=> displayIssues(json.data));
+  .then((json)=> {
+    displayIssues(json.data);
+  })
 };
 
 const displayIssues = (Issues) => {
@@ -55,9 +58,10 @@ const displayIssues = (Issues) => {
   closedSection.innerHTML = "";
   Issues.forEach((Issue) => {
     let card = document.createElement('div');
+    card.className = ""
     if(Issue.status == 'open'){
       card.innerHTML =`
-      <div onclick="loadDetails(${Issue.id}).showModal()" id="Job-container-${Issue.id}" class="border-t-3 border-green-500 rounded-lg shadow-md p-8">
+      <div onclick="loadDetails(${Issue.id})" id="Job-container-${Issue.id}" class="border-t-3 border-green-500 rounded-lg shadow-md p-8 h-105">
         <div class="flex justify-between items-center">
           <img src="assets/Open-Status.png" alt="" class="w-6 h-6">
           <p class="badge badge-dash badge-error rounded-full px-4 py-2 text-xs">${Issue.priority}</p>
@@ -77,12 +81,12 @@ const displayIssues = (Issues) => {
         <br>
         <div class="text-gray-500 flex flex-col items-center md:flex-row justify-between">
           <p class="text-xs">#${Issue.id} by ${Issue.author}</p>
-          <p class="text-xs">${Issue.createdAt}</p>
+          <p class="text-xs">${new Date(Issue.createdAt).toLocaleDateString()}</p>
         </div>
         <br>
         <div class="text-gray-500 flex flex-col items-center md:flex-row justify-between">
           <p class="text-xs">Assignee:${Issue.assignee}</p>
-          <p class="text-xs">Updated:${Issue.updatedAt}</p>
+          <p class="text-xs">Updated:${new Date(Issue.updatedAt).toLocaleDateString()}</p>
         </div>
       </div>
       `
@@ -92,7 +96,7 @@ const displayIssues = (Issues) => {
     }
     else{
       card.innerHTML =`
-      <div onclick="loadDetails(${Issue.id}).showModal()" id="Job-container-${Issue.id}" class="border-t-3 border-purple-500 rounded-lg shadow-md p-8">
+      <div onclick="loadDetails(${Issue.id})" id="Job-container-${Issue.id}" class="border-t-3 border-purple-500 rounded-lg shadow-md p-8 h-105">
       <div class="flex justify-between items-center">
       <img src="assets/Closed- Status .png" alt="" class="w-6 h-6">
       <p class="badge badge-dash badge-error rounded-full px-4 py-2 text-xs">${Issue.priority}</p>
@@ -112,12 +116,12 @@ const displayIssues = (Issues) => {
       <br>
       <div class="text-gray-500 flex flex-col items-center md:flex-row justify-between">
       <p class="text-xs">#${Issue.id} by ${Issue.author}</p>
-      <p class="text-xs">${Issue.createdAt}</p>
+      <p class="text-xs">${new Date(Issue.createdAt).toLocaleDateString()}</p>
       </div>
       <br>
       <div class="text-gray-500 flex flex-col items-center md:flex-row justify-between">
       <p class="text-xs">Assignee:${Issue.assignee}</p>
-      <p class="text-xs">Updated:${Issue.updatedAt}</p>
+      <p class="text-xs">Updated:${new Date(Issue.updatedAt).toLocaleDateString()}</p>
       </div>
       </div>
       `
@@ -136,19 +140,18 @@ const loadDetails = async (id)=>{
 }
 
 const displayDetails = (detail)=>{
-  // console.log(detail);
-  const jobContainer = document.getElementById(`Job-container-${detail.id}`)
-  const modal = document.createElement('div');
+  const modal = document.createElement('dialog');
+  modal.id = `my_modal_${detail.id}`;
+  modal.className = "modal modal-bottom sm:modal-middle";
   if(detail.status == 'open'){
-    jobContainer.innerHTML =`
-     <dialog id="my_modal_${detail.id}" class="modal modal-bottom sm:modal-middle">
+    modal.innerHTML =`
       <div class="modal-box p-10">
         <h3 class="text-lg font-bold">${detail.title}</h3>
         <br>
         <ul class="flex gap-7">
-          <li class="list-none badge badge-success">${detail.status}</li>
+          <li class="list-none badge badge-success rounded-full py-3 px-4">Open</li>
           <li class="list-disc">Opened by ${detail.author}</li>
-          <li class="list-disc">${detail.createdAt}</li>
+          <li class="list-disc">${new Date(detail.createdAt).toLocaleDateString()}</li>
         </ul>
         <br>
         <div class="flex gap-2">
@@ -177,19 +180,19 @@ const displayDetails = (detail)=>{
           </form>
         </div>
       </div>
-    </dialog>
-    `
+    `;
+    document.body.appendChild(modal);
+    modal.showModal();
   }
   else{
-    jobContainer.innerHTML =`
-     <dialog id="my_modal_${detail.id}" class="modal modal-bottom sm:modal-middle">
+    modal.innerHTML =`
       <div class="modal-box p-10">
         <h3 class="text-lg font-bold">${detail.title}</h3>
         <br>
         <ul class="flex gap-7">
-          <li class="list-none badge badge-error">${detail.status}</li>
+          <li class="list-none badge badge-error rounded-full py-3 px-4">Closed</li>
           <li class="list-disc">Opened by ${detail.author}</li>
-          <li class="list-disc">${detail.createdAt}</li>
+          <li class="list-disc">${new Date(detail.createdAt).toLocaleDateString()}</li>
         </ul>
         <br>
         <div class="flex gap-2">
@@ -218,12 +221,43 @@ const displayDetails = (detail)=>{
           </form>
         </div>
       </div>
-    </dialog>
-    `
+    `;
+    document.body.appendChild(modal);
+    modal.showModal();
   }
-  document.getElementById(`my_modal_${detail.id}`).showModal();
+  return
 }
 
 loadIssues();
-displayIssues();
-loadDetails();
+
+const spinner = document.getElementById('spinner');
+
+const Spinner = (spin) => {
+  if(spin == 'true'){
+    spinner.classList.remove('hidden');
+  }
+  else{
+    spinner.classList.add('hidden');
+  }
+}
+
+document.getElementById('btn-search').addEventListener('click',function(){
+  Spinner(true);
+
+  const input = document.getElementById('input-search')
+  const searchValue = input.value.trim();
+  if(searchValue=== ""){
+    loadIssues();
+    return;
+  }
+  
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
+  .then(res => res.json())
+  .then(data => {
+    let search = data.data
+    displayIssues(search);
+    number.innerText = search.length;
+  })
+
+  Spinner(false);
+})

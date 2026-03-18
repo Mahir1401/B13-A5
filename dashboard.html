@@ -43,9 +43,9 @@
               <path d="m21 21-4.3-4.3"></path>
             </g>
           </svg>
-          <input type="search" required placeholder="Search issues..." />
+          <input id="input-search" type="search" required placeholder="Search issues..." />
         </label>
-        <button class="btn btn-primary">+ New Issue</button>
+        <button id="btn-search" class="btn btn-primary">+ New Issue</button>
       </div>
     </nav>
   </header>
@@ -76,11 +76,14 @@
         </div>
       </div>
     </section>
-    <section id="All-section" class="bg-base-100 w-11/12 mx-auto p-4 shadow-sm rounded-b-md gap-4 grid grid-cols-1 md:grid-cols-4">
+    <div id="spinner" class="bg-base-100 w-11/12 mx-auto flex justify-center hidden">
+      <span class="loading loading-infinity loading-xl w-4/12 mx-auto"></span>
+    </div>
+    <section id="All-section" class="bg-base-100 w-11/12 mx-auto p-4 shadow-sm rounded-b-md gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
     </section>
     <section id="Open-section" class="hidden bg-base-100 w-11/12 mx-auto p-4 shadow-sm rounded-b-md gap-4 grid grid-cols-1 md:grid-cols-4">
     </section>
-    <section id="Closed-section" class="hidden bg-base-100 w-11/12 mx-auto p-4 shadow-sm rounded-b-md gap-4 grid grid-cols-1 md:grid-cols-4">
+    <section id="Closed-section" class="hidden bg-base-100 w-11/12 mx-auto p-4 shadow-sm rounded-b-md gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
     </section>
   </main>
   <script src="script/script.js"></script>
