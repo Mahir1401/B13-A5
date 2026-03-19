@@ -33,14 +33,19 @@ function toggle(name) {
     closedSection.classList.add('hidden')
     number.innerText = allSection.childElementCount;
   }
+  else if(name == 'btn-search'){
+    allSection.classList.remove('hidden')
+    openSection.classList.add('hidden')
+    closedSection.classList.add('hidden')
+    allFilterBtn.classList.remove('btn-soft');
+    allFilterBtn.classList.add('btn-primary');
+  }
   else{
     allSection.classList.add('hidden')
     openSection.classList.add('hidden')
     closedSection.classList.remove('hidden')
     number.innerText = closedSection.childElementCount;
   }
-
-
 }
 
 const loadIssues = ()=>{
@@ -50,7 +55,7 @@ const loadIssues = ()=>{
     
     displayIssues(json.data);
   })
-};
+}
 
 const displayIssues = (Issues) => {
   allSection.innerHTML = "";
