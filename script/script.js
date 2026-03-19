@@ -44,10 +44,11 @@ function toggle(name) {
 }
 
 const loadIssues = ()=>{
-
+  // Spinner(true);
   fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
   .then((res) => res.json())
   .then((json)=> {
+    
     displayIssues(json.data);
   })
 };
@@ -230,16 +231,10 @@ const displayDetails = (detail)=>{
 
 loadIssues();
 
-const spinner = document.getElementById('spinner');
 
-const Spinner = (spin) => {
-  if(spin == 'true'){
-    spinner.classList.remove('hidden');
-  }
-  else{
-    spinner.classList.add('hidden');
-  }
-}
+
+
+
 
 document.getElementById('btn-search').addEventListener('click',function(){
   Spinner(true);

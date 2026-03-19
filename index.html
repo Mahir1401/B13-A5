@@ -25,12 +25,15 @@
       font-family: "Geist", sans-serif;
       font-optical-sizing: auto;
     }
-  </style>
+    </style>
 </head>
 
 <body class="min-h-screen bg-gray-100 flex items-center justify-center">
+  <div id="spinner" class="fixed inset-0 flex items-center justify-center bg-white hidden">
+  <span class="loading loading-infinity loading-xl"></span>
+</div>
 
-  <div class="bg-white shadow-md rounded-xl p-8 w-96">
+  <div id="login-page" class="bg-white shadow-md rounded-xl p-8 w-96">
 
     <div class="text-center mb-6">
       <i class="fa-brands fa-github text-5xl mb-3"></i>
@@ -47,6 +50,7 @@
     <button id="login-btn" class="btn btn-primary w-full">Sign In</button>
 
   </div>
+
 
   <script src="script/login.js"></script>
 </body>
