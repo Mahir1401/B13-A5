@@ -239,12 +239,13 @@ document.getElementById('btn-search').addEventListener('click',function(){
     loadIssues();
     return;
   }
-  
-  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
-  .then(res => res.json())
-  .then(data => {
-    let search = data.data
-    displayIssues(search);
-    number.innerText = search.length;
-  })
+  else{
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
+    .then(res => res.json())
+    .then(data => {
+      let search = data.data
+      displayIssues(search);
+      number.innerText = search.length;
+    })
+  }
 })
