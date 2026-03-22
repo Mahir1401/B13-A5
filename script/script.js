@@ -6,56 +6,69 @@ const allSection = document.getElementById('All-section');
 const openSection = document.getElementById('Open-section');
 const closedSection = document.getElementById('Closed-section');
 
+const spinner = document.getElementById('spinner');
+
 let number = document.getElementById('num');
 
 function toggle(name) {
-  allFilterBtn.classList.remove('btn-primary');
-  openFilterBtn.classList.remove('btn-primary');
-  closedFilterBtn.classList.remove('btn-primary');
+  spinner.classList.remove('hidden');
 
-  allFilterBtn.classList.add('btn-soft');
-  openFilterBtn.classList.add('btn-soft');
-  closedFilterBtn.classList.add('btn-soft');
-
-  const selectedBtn = document.getElementById(name)
-  selectedBtn.classList.remove('btn-soft');
-  selectedBtn.classList.add('btn-primary');
-
-  if(name == 'Open-filter-btn'){
-    allSection.classList.add('hidden')
-    closedSection.classList.add('hidden')
-    openSection.classList.remove('hidden')
-    number.innerText = openSection.childElementCount;
-  }
-  else if(name == 'All-filter-btn'){
-    allSection.classList.remove('hidden')
-    openSection.classList.add('hidden')
-    closedSection.classList.add('hidden')
-    number.innerText = allSection.childElementCount;
-  }
-  else if(name == 'btn-search'){
-    allSection.classList.remove('hidden')
-    openSection.classList.add('hidden')
-    closedSection.classList.add('hidden')
-    allFilterBtn.classList.remove('btn-soft');
-    allFilterBtn.classList.add('btn-primary');
-  }
-  else{
-    allSection.classList.add('hidden')
-    openSection.classList.add('hidden')
-    closedSection.classList.remove('hidden')
-    number.innerText = closedSection.childElementCount;
-  }
-}
-
-const loadIssues = ()=>{
-  fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-  .then((res) => res.json())
-  .then((json)=> {
+  setTimeout(() => {   
     
-    displayIssues(json.data);
-  })
+    allFilterBtn.classList.remove('btn-primary');
+    openFilterBtn.classList.remove('btn-primary');
+    closedFilterBtn.classList.remove('btn-primary');
+  
+    allFilterBtn.classList.add('btn-soft');
+    openFilterBtn.classList.add('btn-soft');
+    closedFilterBtn.classList.add('btn-soft');
+  
+    const selectedBtn = document.getElementById(name)
+    selectedBtn.classList.remove('btn-soft');
+    selectedBtn.classList.add('btn-primary');
+  
+    if(name == 'Open-filter-btn'){
+      allSection.classList.add('hidden')
+      closedSection.classList.add('hidden')
+      openSection.classList.remove('hidden')
+      number.innerText = openSection.childElementCount;
+    }
+    else if(name == 'All-filter-btn'){
+      allSection.classList.remove('hidden')
+      openSection.classList.add('hidden')
+      closedSection.classList.add('hidden')
+      number.innerText = allSection.childElementCount;
+    }
+    else if(name == 'btn-search'){
+      allSection.classList.remove('hidden')
+      openSection.classList.add('hidden')
+      closedSection.classList.add('hidden')
+      allFilterBtn.classList.remove('btn-soft');
+      allFilterBtn.classList.add('btn-primary');
+    }
+    else{
+      allSection.classList.add('hidden')
+      openSection.classList.add('hidden')
+      closedSection.classList.remove('hidden')
+      number.innerText = closedSection.childElementCount;
+    }
+    spinner.classList.add('hidden');
+  }, 200);
 }
+
+const loadIssues = () => {
+  spinner.classList.remove('hidden');
+
+  fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+    .then(res => res.json())
+    .then(json => {
+      displayIssues(json.data);
+      number.innerText = json.data.length;
+    })
+    .finally(() => {
+      spinner.classList.add('hidden');
+    });
+};
 
 const displayIssues = (Issues) => {
   allSection.innerHTML = "";
@@ -236,21 +249,25 @@ const displayDetails = (detail)=>{
 loadIssues();
 
 
-document.getElementById('btn-search').addEventListener('click',function(){
-
-  const input = document.getElementById('input-search')
+document.getElementById('btn-search').addEventListener('click', function () {
+  const input = document.getElementById('input-search');
   const searchValue = input.value.trim();
-  if(searchValue=== ""){
+
+  spinner.classList.remove('hidden');
+
+  if (searchValue === "") {
     loadIssues();
     return;
   }
-  else{
-    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
+
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
     .then(res => res.json())
     .then(data => {
-      let search = data.data
+      let search = data.data;
       displayIssues(search);
       number.innerText = search.length;
     })
-  }
-})
+    .finally(() => {
+      spinner.classList.add('hidden');
+    });
+});
